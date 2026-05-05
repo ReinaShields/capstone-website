@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { db, storage, auth } from '../firebase'
-import { deleteDoc, doc, getDoc, collection, query, where, getDocs, setDoc, updateDoc } from 'firebase/firestore'
+import { deleteDoc, doc, getDoc, collection, query, where, getDocs, setDoc, updateDoc, increment } from 'firebase/firestore'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { updateProfile, signOut } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
@@ -42,6 +42,7 @@ function ProfilePage() {
   const [editDescription, setEditDescription] = useState('')
   const [editTags, setEditTags] = useState({ Mural: false, Graffiti: false, Sticker: false, Other: false })
   const [postComments, setPostComments] = useState([])
+  const [confirmDeleteCommentId, setConfirmDeleteCommentId] = useState(null)
 
   useEffect(() => {
     if (!currentUser) { navigate('/login'); return }
@@ -157,10 +158,10 @@ function ProfilePage() {
   }
 
   const handleDeleteComment = async (commentId) => {
-    if (!window.confirm('Delete this comment?')) return
     await deleteDoc(doc(db, 'posts', editingPost.id, 'comments', commentId))
+    await updateDoc(doc(db, 'posts', editingPost.id), { commentCount: increment(-1) })
     setPostComments(prev => prev.filter(c => c.id !== commentId))
-    await updateDoc(doc(db, 'posts', editingPost.id), { commentCount: postComments.length - 1 })
+    setConfirmDeleteCommentId(null)
   }
 
   const getAvatar = () => {
@@ -218,28 +219,36 @@ function ProfilePage() {
             </div>
             <textarea className="border rounded p-2 text-sm" placeholder="Description (optional)" value={editDescription} onChange={e => setEditDescription(e.target.value)} rows={3} />
 
-            {postComments.length > 0 && (
-              <div>
-                <p className="text-sm font-semibold mb-2">Comments</p>
-                <div className="flex flex-col gap-2 max-h-40 overflow-y-auto">
-                  {postComments.map(c => (
-                    <div key={c.id} className="flex items-start justify-between gap-2 border-b border-gray-100 pb-2">
-                      <div className="flex gap-2 items-start">
-                        <img
-                          src={c.pfpUrl ? c.pfpUrl : c.avatarResName ? `/avatars/${c.avatarResName}.png` : '/avatars/avatar_default.png'}
-                          className="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5"
-                        />
-                        <div>
-                          <p className="text-sm font-semibold text-gray-900">{c.username}</p>
-                          <p className="text-sm text-gray-600">{c.text}</p>
+            <div>
+              <p className="text-sm font-semibold mb-2">Comments</p>
+              {postComments.length === 0
+                ? <p className="text-xs text-gray-400">No comments yet.</p>
+                : <div className="flex flex-col gap-2 max-h-40 overflow-y-auto">
+                    {postComments.map(c => (
+                      <div key={c.id} className="flex items-start justify-between gap-2 border-b border-gray-100 pb-2">
+                        <div className="flex gap-2 items-start">
+                          <img
+                            src={c.pfpUrl ? c.pfpUrl : c.avatarResName ? `/avatars/${c.avatarResName}.png` : '/avatars/avatar_default.png'}
+                            className="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5"
+                          />
+                          <div>
+                            <p className="text-sm font-semibold text-gray-900">{c.username}</p>
+                            <p className="text-sm text-gray-600">{c.text}</p>
+                          </div>
                         </div>
+                        {confirmDeleteCommentId === c.id ? (
+                          <div className="flex gap-1 flex-shrink-0">
+                            <button onClick={() => handleDeleteComment(c.id)} className="text-red-500 text-xs font-medium">Confirm</button>
+                            <button onClick={() => setConfirmDeleteCommentId(null)} className="text-gray-400 text-xs">Cancel</button>
+                          </div>
+                        ) : (
+                          <button onClick={() => setConfirmDeleteCommentId(c.id)} className="text-red-400 text-xs flex-shrink-0 hover:text-red-600">Delete</button>
+                        )}
                       </div>
-                      <button onClick={() => handleDeleteComment(c.id)} className="text-red-400 text-xs flex-shrink-0 hover:text-red-600">Delete</button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+                    ))}
+                  </div>
+              }
+            </div>
 
             <div className="flex gap-2">
               <button onClick={handleSavePost} className="text-sm rounded p-2 flex-1 font-medium" style={{ background: '#FFC149', color: '#1B1B1B' }}>Save</button>
@@ -294,7 +303,7 @@ function ProfilePage() {
           <h2 className="font-bold text-lg">My Posts</h2>
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <button onClick={() => { setUsername(userDoc?.username || ''); setBio(userDoc?.bio || ''); setEditOpen(true) }} className="border rounded p-2 text-sm">Edit Profile</button>
-            <button onClick={() => setManageOpen(p => !p)} className="text-sm border rounded px-3 py-1.5">
+            <button onClick={() => setManageOpen(p => !p)} className="text-sm border rounded px-3 py-1.5 ml-2">
               {manageOpen ? 'Done' : 'Manage Posts'}
             </button>
             </div>

@@ -51,13 +51,13 @@ function Navbar() {
 
   return (
     <nav style={{ background: '#ffffff', borderBottom: '1px solid #D9D9D9' }} className="px-6 flex items-center h-14">
-      <Link to="/" className="font-bold text-lg mr-4 self-stretch flex items-center" style={{ color: '#1B1B1B' }}>
-        Alley Archive
+      <Link to="/" className="mr-4 self-stretch flex items-center">
+        <img src="/images/logo_transparent.png" className="h-6 w-auto" />
       </Link>
 
-      <Link to="/gallery" className="text-sm self-stretch flex items-center px-4 gap-6 hover:bg-gray-100 transition-colors" style={{ color: '#1B1B1B' }}>Gallery</Link>
-      <Link to="/map" className="text-sm self-stretch flex items-center px-4 gap-6 hover:bg-gray-100 transition-colors" style={{ color: '#1B1B1B' }}>Map</Link>
-      <Link to="/about" className="text-sm self-stretch flex items-center px-4 gap-6 hover:bg-gray-100 transition-colors" style={{ color: '#1B1B1B' }}>About</Link>
+      <Link to="/gallery" className="text-m font-semibold self-stretch flex items-center px-4 gap-6 hover:bg-gray-100 transition-colors" style={{ color: '#1B1B1B' }}>Gallery</Link>
+      <Link to="/map" className="text-m font-semibold self-stretch flex items-center px-4 gap-6 hover:bg-gray-100 transition-colors" style={{ color: '#1B1B1B' }}>Map</Link>
+      <Link to="/about" className="text-m font-semibold self-stretch flex items-center px-4 gap-6 hover:bg-gray-100 transition-colors" style={{ color: '#1B1B1B' }}>About</Link>
 
       <div className="ml-auto flex items-center gap-4">
         {!user ? (

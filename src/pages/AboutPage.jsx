@@ -15,7 +15,7 @@ function AboutPage() {
         {/* Research Paper */}
         <section>
           <h2 className="text-xl font-bold mb-3">Research Paper</h2>
-          <p className="text-s text-gray-700 mb-4">Street Art, Erasure, and Digital Preservation in Detroit</p>
+          <p className="text-s text-gray-700 mb-4">"Street Art, Erasure, and Digital Preservation in Detroit"</p>
 
 
           <div className="flex flex-col gap-6 text-gray-700 leading-relaxed text-sm">

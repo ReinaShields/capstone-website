@@ -5,7 +5,7 @@ const PLACEHOLDER_IMAGES = [
   { src: '/images/art1.jpg', link: 'https://unsplash.com/photos/red-yellow-and-purple-abstract-painting-Xeif8SdEgRU' },
   { src: '/images/art2.jpg', link: 'https://unsplash.com/photos/a-wall-covered-in-stickers-pqojLmjh4Tc' },
   { src: '/images/art3.jpg', link: 'https://unsplash.com/photos/empty-tunnel-pathway-with-graffiti-walls-jF946mh5QrA' },
-  { src: '/images/art4.jpg', link: 'https://unsplash.com/photos/assorted-stickers-on-white-wall-xKnUnPEUiWA' },
+  { src: '/images/art4.jpg', link: 'https://unsplash.com/photos/graffiti-wall-o1xcUi-Yt_w' },
   { src: '/images/art5.jpg', link: 'https://unsplash.com/photos/text-uymG7UVPXpI' },
 ]
 
