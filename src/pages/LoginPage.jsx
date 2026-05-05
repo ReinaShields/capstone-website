@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { useLocation } from 'react-router-dom';
 
 function LoginPage() {
-  const USE_EMAIL_VERIFICATION = false // dev toggle
+  const USE_EMAIL_VERIFICATION = true // dev toggle
   
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
