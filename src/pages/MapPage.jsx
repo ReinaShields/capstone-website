@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { APIProvider, Map, AdvancedMarker, Pin, InfoWindow } from '@vis.gl/react-google-maps'
+import { APIProvider, Map, Marker, InfoWindow } from '@vis.gl/react-google-maps'
 import { db } from '../firebase'
 import { collection, getDocs } from 'firebase/firestore'
 import { useNavigate } from 'react-router-dom'
@@ -84,7 +84,6 @@ function MapPage() {
       </div>
       <APIProvider apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
         <Map
-          mapId="alley-archive-map"
           defaultZoom={13}
           defaultCenter={{ lat: 42.3314, lng: -83.0458 }}
           style={{ width: '100%', height: '100%' }}
@@ -92,13 +91,11 @@ function MapPage() {
         >
           <MapController posts={filtered} />
           {filtered.map(post => (
-            <AdvancedMarker
+            <Marker
               key={post.id}
               position={{ lat: post.coordinates.latitude, lng: post.coordinates.longitude }}
               onClick={() => setSelected(post)}
-            >
-              <Pin background="#FFC149" borderColor="#e6a800" glyphColor="#1B1B1B" />
-            </AdvancedMarker>
+            />
           ))}
           {selected && (
             <InfoWindow
