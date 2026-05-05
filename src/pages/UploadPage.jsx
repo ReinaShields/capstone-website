@@ -225,11 +225,12 @@ function UploadPage() {
               📍 {usingManualCoords ? 'Pin Set' : 'Add GPS'}
             </button>
           </div>
-          {coordinates && !usingManualCoords ? (
-            <p className="text-xs text-green-600">GPS data found in image!</p>
-          ) : (
-            <p className="text-xs text-red-600">GPS not data found, please manually add coordinates</p>
-          )}
+          {coordinates
+            ? usingManualCoords
+              ? <p className="text-xs text-green-600">Manual pin set!</p>
+              : <p className="text-xs text-green-600">GPS data found in image!</p>
+            : <p className="text-xs text-red-600">No GPS data found, please manually add coordinates</p>
+          }
           <datalist id="city-list">
             {cities
               .filter(city => location.length > 1 && city.toLowerCase().startsWith(location.toLowerCase()))
