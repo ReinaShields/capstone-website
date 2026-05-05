@@ -32,7 +32,7 @@ function AppLayout() {
       </div>
       {location.pathname !== '/map' && (
         <footer className="text-center text-sm p-6 mt-8" style={{ background: '#ffffff', borderTop: '1px solid #D9D9D9', color: '#7A7A7A' }}>
-          <p>Alley Archive — 2026</p>
+          <p>Version 1.01 — 2026</p>
         </footer>
       )}
     </div>
